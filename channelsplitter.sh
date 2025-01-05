@@ -15,6 +15,17 @@
 # channelsplitter.sh 221 *.flac 
 # - creates two stereo files followed by a series of mono files.
 
+# Function to check if SoX is installed
+check_sox_installed() {
+  if command -v sox > /dev/null 2>&1; then
+    return 0
+  else
+    echo "SoX is not installed."
+    return 1
+  fi
+}
+
+check_sox_installed || exit 1  # Exit if SoX is not found
 
 # Function to handle the splitting logic
 split_channels() {
