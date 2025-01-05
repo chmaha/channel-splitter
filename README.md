@@ -4,6 +4,8 @@
 
 Split any number of audio files (wav, flac, aiff or wv) into smaller channel groups via a numeric pattern made up of single digits.
 
+Users can choose between a python script (all OSes) or POSIX shell script (Linux/MacOS).
+
 ### Examples
 
 ```sh
@@ -18,7 +20,7 @@ input[3-4].wav
 etc...
 
 ```sh
-channelsplitter.sh 221 *.aiff
+python channelsplitter.py 221 *.aiff
 ```
 creates two initial stereo files followed by a series of mono files all in aiff format.
 e.g.
