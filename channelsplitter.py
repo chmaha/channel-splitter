@@ -16,18 +16,53 @@ def check_sox_installed():
 def validate_grouping_pattern(grouping_pattern, total_channels):
     """Validate the grouping pattern against the total channel count."""
     if len(grouping_pattern) == 1 and int(grouping_pattern) == total_channels:
-        print(f"Error: The grouping pattern '{grouping_pattern}' is the same as the total channel count ({
-              total_channels}). No splitting needed.")
+        print(f"Error: The grouping pattern '{grouping_pattern}' is the same as the total channel count ({total_channels}). No splitting needed.")
         return False
 
     # Check if the sum of the digits in the grouping pattern exceeds the total channels
     total_pattern = sum(int(digit) for digit in grouping_pattern)
     if total_pattern > total_channels:
-        print(f"Error: The sum of the digits in the grouping pattern ({
-              total_pattern}) exceeds the number of channels ({total_channels}).")
+        print(f"Error: The sum of the digits in the grouping pattern ({total_pattern}) exceeds the number of channels ({total_channels}).")
         return False
 
     return True
+
+
+def check_files_exist(input_file, grouping_pattern):
+    """Check if any output files already exist."""
+    channel_start = 1
+    remaining_channels = int(subprocess.run(['sox', '--i', '-c', input_file], capture_output=True, text=True).stdout.strip())
+    pattern_index = 0
+    existing_files = []
+
+    while remaining_channels > 0:
+        # Determine group size based on the pattern
+        if pattern_index < len(grouping_pattern):
+            group_size = int(grouping_pattern[pattern_index])
+            pattern_index += 1
+        else:
+            group_size = int(grouping_pattern[-1])
+
+        if group_size > remaining_channels:
+            group_size = 1
+
+        # Determine the range of channels for the current output file
+        if group_size == 1:
+            group_name = f"{channel_start}"
+        else:
+            group_name = f"{channel_start}-{channel_start + group_size - 1}"
+
+        # Create the output file name
+        base_name, ext = os.path.splitext(input_file)
+        output_file = f"{base_name}[{group_name}]{ext}"
+
+        if os.path.exists(output_file):
+            existing_files.append(output_file)
+
+        channel_start += group_size
+        remaining_channels -= group_size
+
+    return existing_files
 
 
 def split_channels(input_file, grouping_pattern):
@@ -38,8 +73,7 @@ def split_channels(input_file, grouping_pattern):
     try:
         total_channels = int(result.stdout.strip())
     except ValueError:
-        print(f"Error: Unable to determine the number of channels in {
-              input_file}.")
+        print(f"Error: Unable to determine the number of channels in {input_file}.")
         return
 
     print(f"Total channels in '{input_file}': {total_channels}")
@@ -47,6 +81,17 @@ def split_channels(input_file, grouping_pattern):
     # Validate the grouping pattern
     if not validate_grouping_pattern(grouping_pattern, total_channels):
         return
+
+    # Check if any output files already exist
+    existing_files = check_files_exist(input_file, grouping_pattern)
+    if existing_files:
+        print(f"Warning: The following output files already exist:")
+        for file in existing_files:
+            print(f"  {file}")
+        user_input = input("Do you want to continue and overwrite these files? (y/n): ")
+        if user_input.lower() != 'y':
+            print("Exiting without making changes.")
+            return
 
     channel_start = 1
     remaining_channels = total_channels
@@ -76,8 +121,7 @@ def split_channels(input_file, grouping_pattern):
         output_file = f"{base_name}[{group_name}]{ext}"
 
         # Run SoX to split the channels
-        remix_args = [str(i) for i in range(
-            channel_start, channel_start + group_size)]
+        remix_args = [str(i) for i in range(channel_start, channel_start + group_size)]
         subprocess.run(['sox', input_file, output_file, 'remix'] + remix_args)
 
         print(f"Saved {output_file}")
