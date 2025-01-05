@@ -2,6 +2,14 @@ import os
 import subprocess
 import sys
 
+def check_sox_installed():
+    """Check if SoX is installed and accessible."""
+    try:
+        subprocess.run(['sox', '--version'], capture_output=True, text=True, check=True)
+    except FileNotFoundError:
+        print("Error: SoX is not installed or not available in the system PATH.")
+        sys.exit(1)
+
 
 def validate_grouping_pattern(grouping_pattern, total_channels):
     """Validate the grouping pattern against the total channel count."""
@@ -72,6 +80,7 @@ def split_channels(input_file, grouping_pattern):
 
 
 def main():
+    check_sox_installed()
     if len(sys.argv) < 3:
         print("Usage: python channelsplitter.py <grouping_pattern> <input_file>")
         print("Example: python channelsplitter.py 321 test_20channel.wav")
