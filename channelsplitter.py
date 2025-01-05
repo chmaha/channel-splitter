@@ -2,10 +2,12 @@ import os
 import subprocess
 import sys
 
+
 def check_sox_installed():
     """Check if SoX is installed and accessible."""
     try:
-        subprocess.run(['sox', '--version'], capture_output=True, text=True, check=True)
+        subprocess.run(['sox', '--version'],
+                       capture_output=True, text=True, check=True)
     except FileNotFoundError:
         print("Error: SoX is not installed or not available in the system PATH.")
         sys.exit(1)
@@ -14,13 +16,15 @@ def check_sox_installed():
 def validate_grouping_pattern(grouping_pattern, total_channels):
     """Validate the grouping pattern against the total channel count."""
     if len(grouping_pattern) == 1 and int(grouping_pattern) == total_channels:
-        print(f"Error: The grouping pattern '{grouping_pattern}' is the same as the total channel count ({total_channels}). No splitting needed.")
+        print(f"Error: The grouping pattern '{grouping_pattern}' is the same as the total channel count ({
+              total_channels}). No splitting needed.")
         return False
 
     # Check if the sum of the digits in the grouping pattern exceeds the total channels
     total_pattern = sum(int(digit) for digit in grouping_pattern)
     if total_pattern > total_channels:
-        print(f"Error: The sum of the digits in the grouping pattern ({total_pattern}) exceeds the number of channels ({total_channels}).")
+        print(f"Error: The sum of the digits in the grouping pattern ({
+              total_pattern}) exceeds the number of channels ({total_channels}).")
         return False
 
     return True
@@ -29,11 +33,13 @@ def validate_grouping_pattern(grouping_pattern, total_channels):
 def split_channels(input_file, grouping_pattern):
     """Split the channels of the input audio file according to a grouping pattern."""
     # Get total number of channels using SoX
-    result = subprocess.run(['sox', '--i', '-c', input_file], capture_output=True, text=True)
+    result = subprocess.run(
+        ['sox', '--i', '-c', input_file], capture_output=True, text=True)
     try:
         total_channels = int(result.stdout.strip())
     except ValueError:
-        print(f"Error: Unable to determine the number of channels in {input_file}.")
+        print(f"Error: Unable to determine the number of channels in {
+              input_file}.")
         return
 
     print(f"Total channels in '{input_file}': {total_channels}")
@@ -52,7 +58,8 @@ def split_channels(input_file, grouping_pattern):
             group_size = int(grouping_pattern[pattern_index])
             pattern_index += 1
         else:
-            group_size = int(grouping_pattern[-1])  # Use the last digit of the pattern for remaining groups
+            # Use the last digit of the pattern for remaining groups
+            group_size = int(grouping_pattern[-1])
 
         # Adjust group size if remaining channels are less
         if group_size > remaining_channels:
@@ -69,7 +76,8 @@ def split_channels(input_file, grouping_pattern):
         output_file = f"{base_name}[{group_name}]{ext}"
 
         # Run SoX to split the channels
-        remix_args = [str(i) for i in range(channel_start, channel_start + group_size)]
+        remix_args = [str(i) for i in range(
+            channel_start, channel_start + group_size)]
         subprocess.run(['sox', input_file, output_file, 'remix'] + remix_args)
 
         print(f"Saved {output_file}")
@@ -81,6 +89,7 @@ def split_channels(input_file, grouping_pattern):
 
 def main():
     check_sox_installed()
+
     if len(sys.argv) < 3:
         print("Usage: python channelsplitter.py <grouping_pattern> <input_file>")
         print("Example: python channelsplitter.py 321 test_20channel.wav")
