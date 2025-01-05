@@ -46,4 +46,4 @@ bach_violin_sontata[9-10].wv
 bach_violin_sontata[11].wv
 ```
 
-Essentially, if the individual digits of the pattern are less than the initial channel count, it will reuse the final digit as much as it can until it needs to create mono remainders. It also checks if files already exist as well as showing messages if the summed digits of the pattern exceed the input channel count or if there is an attempt at a needless split (i.e. using a pattern of 2 for stereo file).
+Essentially, if the individual digits of the pattern add up to less than the initial channel count, it will reuse the final digit as much as it can until it needs to create mono remainders. It also checks if files already exist as well as showing messages if the summed digits of the pattern exceed the input channel count or if there is an attempt at a needless split (i.e. using a pattern of 2 for stereo file).
