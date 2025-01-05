@@ -2,7 +2,7 @@
 
 #### Requirements: SoX
 
-Split any number of audio files into smaller channel groups via a numeric pattern made up of single digits.
+Split any number of audio files (wav, flac, aiff or wv) into smaller channel groups via a numeric pattern made up of single digits.
 
 ### Examples
 
