@@ -6,7 +6,7 @@ Split any number of audio files (wav, flac, aiff or wv) into smaller channel gro
 
 Users can choose between a python script (all OSes) or POSIX shell script (Linux/MacOS).
 
-### Examples
+### Example 1
 
 ```sh
 channelsplitter.sh 2 input.wav
@@ -17,7 +17,7 @@ e.g.
 input[1-2].wav
 input[3-4].wav
 ```
-etc...
+### Example 2
 
 ```sh
 python channelsplitter.py 221 *.aiff
@@ -30,7 +30,7 @@ mozart[3-4].aiff
 mozart[5].aiff
 mozart[6].aiff
 ```
-etc...
+### Example 3
 
 ```sh
 channelsplitter.sh 312 *.wv
