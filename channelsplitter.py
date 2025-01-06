@@ -1,3 +1,35 @@
+# Batch Audio Channel Splitter (chmaha)
+
+# Splits one or more input files by the integer pattern made up of single digits.
+# e.g. 32 splits the file into a 3-channel file, followed by as many stereo files as possible.
+# Mono files are created for any remaining channels.
+# 
+# Supports wav, flac, aiff and wavpack input.
+# Output naming adds an identifying suffix.
+# For example, output[3-4].wav is a file containing channels 3 and 4. 
+#
+# Further examples: 
+# python channelsplitter.py 2 *.wav 
+# - creates a series of stereo files followed by a mono remainder if needed.
+# 
+# python channelsplitter.py 221 *.flac 
+# - creates two stereo files followed by a series of mono files.
+#
+# Copyright (C) 2025 chmaha
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
 import os
 import subprocess
 import sys
