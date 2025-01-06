@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Batch Audio Channel Splitter (chmaha)
 
 # Splits one or more input files by the integer pattern made up of single digits.
