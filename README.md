@@ -11,6 +11,17 @@ Split any number of audio files (wav, flac, aiff or wv) into smaller channel gro
 
 Users can choose between a python script (all OSes) or POSIX shell script (Linux/MacOS).
 
+#### Python Usage:
+If you don't have the script set as executable or if you're on Windows, run the script using Python:
+```sh
+python channel-splitter.py <grouping pattern> <file_pattern>
+```
+On Unix-based systems (MacOS/Linux), if you have the script as executable, you can run it directly:
+```sh
+chmod +x sample-right.py
+./channel-splitter.py <grouping pattern> <file_pattern>
+``` 
+
 ### Example 1 (python)
 
 ```sh
