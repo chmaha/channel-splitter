@@ -9,9 +9,19 @@ Before using this script, ensure you have SoX (Sound eXchange) installed:
 
 Split any number of audio files (wav, flac, aiff or wv) into smaller channel groups via a numeric pattern made up of single digits.
 
+### Grouping Pattern
+
+Examples:
+- 1 - a series of mono files
+- 2 - a series of stereo files with a remainder mono file as necessary
+- 21 - a single stereo for the first two channels, followed by a series of mono files
+- 231 - An initial stereo file (channels 1-2), followed by a 3-channel file (channels 3-4-5), followed by a series of mono files
+
+Essentially, if the individual digits of the pattern add up to less than the initial channel count, it will reuse the final digit as much as it can until it needs to create mono remainders. It also checks if files already exist as well as showing messages if the summed digits of the pattern exceed the input channel count or if there is an attempt at a needless split (i.e. using a pattern of 2 for stereo file).
+
 Users can choose between a python script (all OSes) or POSIX shell script (Linux/MacOS).
 
-#### Python Usage:
+### Python Usage:
 If you don't have the script set as executable or if you're on Windows, run the script using Python:
 ```sh
 python channel-splitter.py <grouping pattern> <file_pattern>
@@ -20,7 +30,7 @@ On Unix-based systems (MacOS/Linux), if you have the script as executable, you c
 ```sh
 chmod +x sample-right.py
 ./channel-splitter.py <grouping pattern> <file_pattern>
-``` 
+```
 
 ### Example 1 (python)
 
@@ -61,5 +71,3 @@ bach_violin_sontata[7-8].wv
 bach_violin_sontata[9-10].wv
 bach_violin_sontata[11].wv
 ```
-
-Essentially, if the individual digits of the pattern add up to less than the initial channel count, it will reuse the final digit as much as it can until it needs to create mono remainders. It also checks if files already exist as well as showing messages if the summed digits of the pattern exceed the input channel count or if there is an attempt at a needless split (i.e. using a pattern of 2 for stereo file).
