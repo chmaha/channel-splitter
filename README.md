@@ -1,15 +1,20 @@
 # Batch Audio Channel Splitter
 
-#### Requirements: SoX
+### Prerequisites
+
+Before using this script, ensure you have SoX (Sound eXchange) installed:
+  - **Linux**: Install via your package manager using `sudo apt install sox` (Debian/Ubuntu), `sudo dnf in sox` (Fedora) etc.
+  - **macOS**: Install using `brew install sox` (Homebrew).
+  - **Windows**: Download and install SoX from: http://sox.sourceforge.net/.
 
 Split any number of audio files (wav, flac, aiff or wv) into smaller channel groups via a numeric pattern made up of single digits.
 
 Users can choose between a python script (all OSes) or POSIX shell script (Linux/MacOS).
 
-### Example 1
+### Example 1 (python)
 
 ```sh
-channel-splitter.sh 2 input.wav
+python channel-splitter.py 2 input.wav
 ```
 creates a series of stereo wav files with any remainder as mono
 e.g. 
@@ -17,10 +22,10 @@ e.g.
 input[1-2].wav
 input[3-4].wav
 ```
-### Example 2
+### Example 2 (shell script)
 
 ```sh
-python channel-splitter.py 221 *.aiff
+channel-splitter.sh 221 *.aiff
 ```
 creates two initial stereo files followed by a series of mono files all in aiff format.
 e.g.
@@ -30,10 +35,10 @@ mozart[3-4].aiff
 mozart[5].aiff
 mozart[6].aiff
 ```
-### Example 3
+### Example 3 (python)
 
 ```sh
-channel-splitter.sh 312 *.wv
+python channel-splitter.py 312 *.wv
 ```
 creates a 3-channel file, followed by a mono file, followed by a series of stereo files with mono remainders as required (all in wavpack format).
 e.g.
