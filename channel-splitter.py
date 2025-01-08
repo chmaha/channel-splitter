@@ -38,13 +38,39 @@ import sys
 
 
 def check_sox_installed():
-    """Check if SoX is installed and accessible."""
+    """Check if SoX is installed."""
+    # Check if SoX is in PATH
     try:
-        subprocess.run(['sox', '--version'],
+        subprocess.run(["sox", '--version'],
                        capture_output=True, text=True, check=True)
-    except FileNotFoundError:
-        print("Error: SoX is not installed or not available in the system PATH.")
-        sys.exit(1)
+        return "sox"
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+
+    # On Windows, check common installation paths
+    if os.name == 'nt':
+        common_paths = [
+            r"C:\\Program Files (x86)\\sox-*",
+            r"C:\\Program Files\\sox-*"
+        ]
+
+        for base_path in common_paths:
+            path_pattern = os.path.join(base_path, "sox.exe")
+            for sox_path in glob.glob(path_pattern):
+                if os.path.exists(sox_path):
+                    return sox_path
+
+    # If SoX isn't found, inform the user
+    if os.name == "posix":
+        print("Error: SoX is not installed or not in PATH.")
+        print("On Linux, you can install it with your package manager. For example:")
+        print("  - On Debian/Ubuntu-based systems: sudo apt install sox")
+        print("  - On Red Hat/Fedora/CentOS-based systems: sudo dnf install sox")
+        print("  - On Arch-based systems: sudo pacman -S sox")
+        print("On macOS, you can install it with: brew install sox")
+    else:
+        print("Download and install SoX from: http://sox.sourceforge.net/")
+    sys.exit(1)
 
 
 def validate_grouping_pattern(grouping_pattern, total_channels):
@@ -99,11 +125,11 @@ def check_files_exist(input_file, grouping_pattern):
     return existing_files
 
 
-def split_channels(input_file, grouping_pattern):
+def split_channels(sox_command, input_file, grouping_pattern):
     """Split the channels of the input audio file according to a grouping pattern."""
     # Get total number of channels using SoX
     result = subprocess.run(
-        ['sox', '--i', '-c', input_file], capture_output=True, text=True)
+        [sox_command, '--i', '-c', input_file], capture_output=True, text=True)
     try:
         total_channels = int(result.stdout.strip())
     except ValueError:
@@ -166,7 +192,7 @@ def split_channels(input_file, grouping_pattern):
 
 
 def main():
-    check_sox_installed()
+    sox_command = check_sox_installed()
 
     if len(sys.argv) < 3:
         print("Usage: python channel-splitter.py <grouping_pattern> <input_file>")
@@ -185,7 +211,7 @@ def main():
             print(f"Error: File '{input_file}' not found.")
             continue
 
-        split_channels(input_file, grouping_pattern)
+        split_channels(sox_command, input_file, grouping_pattern)
 
 
 if __name__ == "__main__":
