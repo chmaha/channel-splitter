@@ -69,6 +69,7 @@ def check_sox_installed():
         print("  - On Arch-based systems: sudo pacman -S sox")
         print("On macOS, you can install it with: brew install sox")
     else:
+        print("Error: SoX is not installed.")
         print("Download and install SoX from: http://sox.sourceforge.net/")
     sys.exit(1)
 
