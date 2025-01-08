@@ -11,10 +11,10 @@
 # For example, output[3-4].wav is a file containing channels 3 and 4. 
 #
 # Further examples: 
-# channelsplitter.sh 2 *.wav 
+# channel-splitter.sh 2 *.wav 
 # - creates a series of stereo files followed by a mono remainder if needed.
 # 
-# channelsplitter.sh 221 *.flac 
+# channel-splitter.sh 221 *.flac 
 # - creates two stereo files followed by a series of mono files.
 #
 # Copyright (C) 2025 chmaha

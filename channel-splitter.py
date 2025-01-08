@@ -11,10 +11,10 @@
 # For example, output[3-4].wav is a file containing channels 3 and 4. 
 #
 # Further examples: 
-# python channelsplitter.py 2 *.wav 
+# python channel-splitter.py 2 *.wav 
 # - creates a series of stereo files followed by a mono remainder if needed.
 # 
-# python channelsplitter.py 221 *.flac 
+# python channel-splitter.py 221 *.flac 
 # - creates two stereo files followed by a series of mono files.
 #
 # Copyright (C) 2025 chmaha
@@ -169,8 +169,8 @@ def main():
     check_sox_installed()
 
     if len(sys.argv) < 3:
-        print("Usage: python channelsplitter.py <grouping_pattern> <input_file>")
-        print("Example: python channelsplitter.py 321 test_20channel.wav")
+        print("Usage: python channel-splitter.py <grouping_pattern> <input_file>")
+        print("Example: python channel-splitter.py 321 test_20channel.wav")
         return
 
     grouping_pattern = sys.argv[1]

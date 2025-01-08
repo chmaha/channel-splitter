@@ -9,7 +9,7 @@ Users can choose between a python script (all OSes) or POSIX shell script (Linux
 ### Example 1
 
 ```sh
-channelsplitter.sh 2 input.wav
+channel-splitter.sh 2 input.wav
 ```
 creates a series of stereo wav files with any remainder as mono
 e.g. 
@@ -20,7 +20,7 @@ input[3-4].wav
 ### Example 2
 
 ```sh
-python channelsplitter.py 221 *.aiff
+python channel-splitter.py 221 *.aiff
 ```
 creates two initial stereo files followed by a series of mono files all in aiff format.
 e.g.
@@ -33,7 +33,7 @@ mozart[6].aiff
 ### Example 3
 
 ```sh
-channelsplitter.sh 312 *.wv
+channel-splitter.sh 312 *.wv
 ```
 creates a 3-channel file, followed by a mono file, followed by a series of stereo files with mono remainders as required (all in wavpack format).
 e.g.
