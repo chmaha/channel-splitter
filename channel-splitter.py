@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 # Batch Audio Channel Splitter (chmaha)
 
